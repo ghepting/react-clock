@@ -2,37 +2,54 @@ import React from "react";
 import "./styles.scss";
 
 export default function App() {
-  const getHandRotations = () => {
+  const getClockHandDegrees = () => {
     const time = new Date();
-    const secondsDecimal = time.getSeconds() / 60;
-    const minutesDecimal = time.getMinutes() / 60 + secondsDecimal / 60;
-    const hoursDecimal = (time.getHours() % 12) / 12 + minutesDecimal / 60;
+    const secondsDecimal = time.getSeconds() / 60; // precise second hand positioning
+    const minutesDecimal = time.getMinutes() / 60 + secondsDecimal / 60; // fractional minute hand positioning
+    const hoursDecimal = (time.getHours() % 12) / 12 + minutesDecimal / 60; // fractional hour hand positioning
 
-    return [hoursDecimal * 360, minutesDecimal * 360, secondsDecimal * 360];
+    return {
+      hours: hoursDecimal * 360,
+      minutes: minutesDecimal * 360,
+      seconds: secondsDecimal * 360
+    };
   };
 
-  const [clockHandRotations, setClockHandRotations] = React.useState(
-    getHandRotations()
+  const [clockHandDegrees, setClockHandDegrees] = React.useState(
+    getClockHandDegrees()
   );
 
-  React.useEffect(() => {
-    setTimeout(() => {
+  // TODO: refactor to useReducer to address bugs
+  React.useLayoutEffect(() => {
+    const timer = setTimeout(() => {
       let hour, minute, second;
-      [hour, minute, second] = getHandRotations();
+      [hour, minute, second] = Object.values(getClockHandDegrees());
 
-      let secondDiff = second - (clockHandRotations[2] % 360);
+      let hourDiff = hour - (clockHandDegrees.hours % 360);
+      if (hourDiff < 0) hourDiff = 0; // from 360 back to zero
+
+      let minuteDiff = minute - (clockHandDegrees.minutes % 360);
+      if (minuteDiff < 0) minuteDiff = 0; // from 360 back to zero
+
+      let secondDiff = second - (clockHandDegrees.seconds % 360);
       if (secondDiff < 0) secondDiff = 360 / 60; // from 360 back to zero
-      const newSeconds = clockHandRotations[2] + secondDiff;
-      console.log(secondDiff, clockHandRotations[2], second);
 
-      setClockHandRotations([hour, minute, newSeconds]);
-    }, 100);
+      setClockHandDegrees({
+        hours: clockHandDegrees.hours + hourDiff,
+        minutes: clockHandDegrees.minutes + minuteDiff,
+        seconds: clockHandDegrees.seconds + secondDiff
+      });
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
   });
 
-  const getComputedStyles = index => {
+  const getComputedStyles = key => {
     return {
       transform: `translateX(-50%) scale(-1) rotate(${
-        clockHandRotations[index]
+        clockHandDegrees[key]
       }deg)`
     };
   };
@@ -43,19 +60,22 @@ export default function App() {
     });
   };
 
+  const perf = performance.now();
   const result = React.useMemo(() => {
     return (
       <div className="App">
         <div className="clock">
           <ul className="lines">{generateListItems(60)}</ul>
           <ol className="dial">{generateListItems(12)}</ol>
-          <div className="hourHand" style={getComputedStyles(0)} />
-          <div className="minuteHand" style={getComputedStyles(1)} />
-          <div className="secondHand" style={getComputedStyles(2)} />
+          <div className="hourHand" style={getComputedStyles("hours")} />
+          <div className="minuteHand" style={getComputedStyles("minutes")} />
+          <div className="secondHand" style={getComputedStyles("seconds")} />
         </div>
       </div>
     );
-  }, [clockHandRotations]);
+  }, [clockHandDegrees]);
+
+  console.log(`Rendering time: ${performance.now() - perf}s`);
 
   return result;
 }
