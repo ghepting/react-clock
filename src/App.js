@@ -11,7 +11,7 @@ export default function App() {
     return {
       hours: hoursDecimal * 360,
       minutes: minutesDecimal * 360,
-      seconds: secondsDecimal * 360
+      seconds: Math.round(secondsDecimal * 360) // not sure why, but this doesn't always return round numbers...
     };
   };
 
@@ -19,25 +19,22 @@ export default function App() {
     getClockHandDegrees()
   );
 
-  // TODO: refactor to useReducer to address bugs
   React.useLayoutEffect(() => {
     const timer = setTimeout(() => {
-      let hour, minute, second;
-      [hour, minute, second] = Object.values(getClockHandDegrees());
+      let hours, minutes, seconds;
+      [hours, minutes, seconds] = Object.values(getClockHandDegrees());
 
-      let hourDiff = hour - (clockHandDegrees.hours % 360);
-      if (hourDiff < 0) hourDiff = 0; // from 360 back to zero
-
-      let minuteDiff = minute - (clockHandDegrees.minutes % 360);
-      if (minuteDiff < 0) minuteDiff = 0; // from 360 back to zero
-
-      let secondDiff = second - (clockHandDegrees.seconds % 360);
-      if (secondDiff < 0) secondDiff = 360 / 60; // from 360 back to zero
+      let hoursDiff = (hours % 360) - (clockHandDegrees.hours % 360);
+      if (hoursDiff < 0) hoursDiff = hoursDiff + 360; // 360 => 0 transition handler
+      let minutesDiff = (minutes % 360) - (clockHandDegrees.minutes % 360);
+      if (minutesDiff < 0) minutesDiff = minutesDiff + 360; // 360 => 0 transition handler
+      let secondsDiff = (seconds % 360) - (clockHandDegrees.seconds % 360);
+      if (secondsDiff < 0) secondsDiff = secondsDiff + 360; // 360 => 0 transition handler
 
       setClockHandDegrees({
-        hours: clockHandDegrees.hours + hourDiff,
-        minutes: clockHandDegrees.minutes + minuteDiff,
-        seconds: clockHandDegrees.seconds + secondDiff
+        hours: clockHandDegrees.hours + hoursDiff,
+        minutes: clockHandDegrees.minutes + minutesDiff,
+        seconds: clockHandDegrees.seconds + secondsDiff
       });
     }, 200);
 
@@ -60,7 +57,7 @@ export default function App() {
     });
   };
 
-  const perf = performance.now();
+  // const perf = performance.now();
   const result = React.useMemo(() => {
     return (
       <div className="App">
@@ -75,7 +72,7 @@ export default function App() {
     );
   }, [clockHandDegrees]);
 
-  console.log(`Rendering time: ${performance.now() - perf}s`);
+  // console.log(`Rendering time: ${performance.now() - perf}s`);
 
   return result;
 }
