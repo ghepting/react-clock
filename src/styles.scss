@@ -29,7 +29,7 @@ $lineSize: $clockSize * 0.05;
     content: " ";
     display: block;
     position: absolute;
-    z-index: 1;
+    // z-index: 1;
     top: 0;
     right: 0;
     bottom: 0;
@@ -46,11 +46,10 @@ $lineSize: $clockSize * 0.05;
     right: -#{$clockBorder};
     bottom: -#{$clockBorder};
     left: -#{$clockBorder};
-    // background: radial-gradient(white 0%, white 62%, #1b1b1b 62%, #333 65%, black 67%, #333 70%);
     background:
       radial-gradient(
-      white 0,
-      white #{$clockSize / 2 - $clockBorder},
+      transparent 0,
+      transparent #{$clockSize / 2 - $clockBorder},
       #1b1b1b #{$clockSize / 2 - $clockBorder},
       #333 #{$clockSize / 2 - $clockBorder + 3vmin},
       #000 #{$clockSize / 2 - $clockBorder + 5vmin});
