@@ -1,5 +1,8 @@
 $red: #DF151A;
 $black: #000;
+$clockSize: 96vmin;
+$clockBorder: $clockSize * 0.065;
+$lineSize: $clockSize * 0.05;
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -11,15 +14,16 @@ $black: #000;
 }
 
 .clock {
-  width: 98vmin;
-  height: 98vmin;
-  border: 4vmin solid $black;
+  width: $clockSize;
+  height: $clockSize;
+  border: $clockBorder solid $black;
   border-radius: 50%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: radial-gradient(white 0%, white 67.5%, black 75%);
+  box-shadow: 1.5vmin 1.5vmin 3vmin rgba(black, 0.35);
 
   &::before {
     content: " ";
@@ -138,7 +142,7 @@ $black: #000;
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 10vmin;
+  font-size: $clockSize * 0.1;
   counter-reset: my-awesome-counter;
   
   > li {
@@ -192,8 +196,8 @@ $black: #000;
       content: " ";
       display: block;
       width: 2px;
-      height: 4vmin;
-      transform: translateY(40vmin);
+      height: $lineSize;
+      transform: translateY(calc(#{($clockSize / 2) - $clockBorder - $lineSize} - 1vmin));
       background: rgba(black, 0.1);
     }
 
