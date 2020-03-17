@@ -64,9 +64,9 @@ $black: #000;
 }
 
 .hourHand {
-  $hourHandWidth: 10px;
+  $hourHandWidth: 1.6vmin;
   $hourHandBorder: $hourHandWidth / 2;
-  $hourHandTail: $hourHandWidth * 3;
+  $hourHandTail: $hourHandWidth * 2.4;
   width: $hourHandWidth;
   height: 28%;
   transition: transform 1s linear;
@@ -87,9 +87,9 @@ $black: #000;
 }
 
 .minuteHand {
-  $minuteHandWidth: 8px;
+  $minuteHandWidth: 1.2vmin;
   $minuteHandBorder: $minuteHandWidth / 2;
-  $minuteHandTail: $minuteHandWidth * 5;
+  $minuteHandTail: $minuteHandWidth * 8;
   width: $minuteHandWidth;
   height: 45%;
   transition: transform 1s linear;
@@ -110,7 +110,7 @@ $black: #000;
 }
 
 .secondHand {
-  $secondHandWidth: 4px;
+  $secondHandWidth: 0.6vmin;
   $secondHandBorder: $secondHandWidth / 2;
   $secondHandTail: $secondHandWidth * 15;
   width: $secondHandWidth;
