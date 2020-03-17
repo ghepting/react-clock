@@ -8,11 +8,6 @@ $lineSize: $clockSize * 0.05;
   box-sizing: border-box;
 }
 
-.App {
-  font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
-  text-align: center;
-}
-
 .clock {
   width: $clockSize;
   height: $clockSize;
@@ -23,7 +18,7 @@ $lineSize: $clockSize * 0.05;
   left: 50%;
   transform: translate(-50%, -50%);
   background: radial-gradient(white 0%, white 67.5%, black 75%);
-  box-shadow: 1.5vmin 1.5vmin 3vmin rgba(black, 0.35);
+  box-shadow: 1.5vmin 1.5vmin 2vmin rgba(black, 0.35);
 
   &::before {
     content: " ";
@@ -142,10 +137,12 @@ $lineSize: $clockSize * 0.05;
 }
 
 .dial {
+  font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
   margin: 0;
   padding: 0;
   list-style: none;
   font-size: $clockSize * 0.1;
+  line-height: 1;
   counter-reset: my-awesome-counter;
 
   &::after {
