@@ -43,14 +43,6 @@ export default function App() {
     };
   });
 
-  const getComputedStyles = key => {
-    return {
-      transform: `translateX(-50%) scale(-1) rotate(${
-        clockHandDegrees[key]
-      }deg)`
-    };
-  };
-
   const generateListItems = n => {
     return [...Array(n)].map((e, i) => {
       return <li key={i} />;
@@ -59,6 +51,14 @@ export default function App() {
 
   // const perf = performance.now();
   const result = React.useMemo(() => {
+    const getComputedStyles = key => {
+      return {
+        transform: `translateX(-50%) scale(-1) rotate(${
+          clockHandDegrees[key]
+        }deg)`
+      };
+    };
+
     return (
       <div className="App">
         <div className="clock">
