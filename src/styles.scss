@@ -1,7 +1,7 @@
 $red: #DF151A;
 $black: #000;
 $clockSize: 96vmin;
-$clockBorder: $clockSize * 0.065;
+$clockBorder: $clockSize * 0.08;
 $lineSize: $clockSize * 0.05;
 
 *, *::before, *::after {
@@ -42,14 +42,19 @@ $lineSize: $clockSize * 0.05;
     content: " ";
     display: block;
     position: absolute;
-    z-index: 3;
-    width: 2.8vmin;
-    height: 2.8vmin;
-    background: $red;
+    top: -#{$clockBorder};
+    right: -#{$clockBorder};
+    bottom: -#{$clockBorder};
+    left: -#{$clockBorder};
+    // background: radial-gradient(white 0%, white 62%, #1b1b1b 62%, #333 65%, black 67%, #333 70%);
+    background:
+      radial-gradient(
+      white 0,
+      white #{$clockSize / 2 - $clockBorder},
+      #1b1b1b #{$clockSize / 2 - $clockBorder},
+      #333 #{$clockSize / 2 - $clockBorder + 3vmin},
+      #000 #{$clockSize / 2 - $clockBorder + 5vmin});
     border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 }
 
@@ -68,7 +73,7 @@ $lineSize: $clockSize * 0.05;
 }
 
 .hourHand {
-  $hourHandWidth: 1.6vmin;
+  $hourHandWidth: 1.5vmin;
   $hourHandBorder: $hourHandWidth / 2;
   $hourHandTail: $hourHandWidth * 2.4;
   width: $hourHandWidth;
@@ -80,7 +85,7 @@ $lineSize: $clockSize * 0.05;
     content: " ";
     display: block;
     position: absolute;
-    top: calc(-#{$hourHandTail} + 1px);
+    top: calc(-#{$hourHandTail} + 2px);
     left: -50%;
     width: $hourHandWidth * 2;
     height: $hourHandWidth * 2;
@@ -103,7 +108,7 @@ $lineSize: $clockSize * 0.05;
     content: " ";
     display: block;
     position: absolute;
-    top: calc(-#{$minuteHandTail} + 1px);
+    top: calc(-#{$minuteHandTail} + 2px);
     left: -50%;
     width: $minuteHandWidth * 2;
     height: $minuteHandWidth * 2;
@@ -144,6 +149,20 @@ $lineSize: $clockSize * 0.05;
   list-style: none;
   font-size: $clockSize * 0.1;
   counter-reset: my-awesome-counter;
+
+  &::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    z-index: 4;
+    width: 2.8vmin;
+    height: 2.8vmin;
+    background: $red;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
   
   > li {
     counter-increment: my-awesome-counter;
