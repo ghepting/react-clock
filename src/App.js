@@ -18,6 +18,43 @@ export default function App() {
   const [clockHandDegrees, setClockHandDegrees] = React.useState(
     getClockHandDegrees()
   );
+  const [weatherData, setWeatherData] = React.useState({});
+
+  async function fetchWeatherData() {
+    console.log("Fetching updated weather data...");
+    await navigator.geolocation.getCurrentPosition(position => {
+      fetch(
+        `https://community-open-weather-map.p.rapidapi.com/weather?units=imperial&lat=${
+          position.coords.latitude
+        }&lon=${position.coords.longitude}`,
+        {
+          method: "GET",
+          headers: {
+            "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
+            "x-rapidapi-key":
+              "8fa05388c0msh96785ac044ddfa6p1a7ba7jsnb8a88b105038"
+          }
+        }
+      ).then(async response => {
+        const json = await response.json();
+        setWeatherData(json);
+      });
+    });
+  }
+
+  React.useEffect(() => {
+    fetchWeatherData();
+  }, []);
+
+  React.useEffect(() => {
+    const weatherTimer = setTimeout(() => {
+      fetchWeatherData();
+    }, 1000 * 60 * 15); // every 15 minutes
+
+    return () => {
+      clearTimeout(weatherTimer);
+    };
+  }, [weatherData]);
 
   React.useLayoutEffect(() => {
     const timer = setTimeout(() => {
@@ -49,6 +86,14 @@ export default function App() {
     });
   };
 
+  const getTemperature = () => {
+    if (weatherData.main) {
+      return Math.round(weatherData.main.temp);
+    } else {
+      return "XX";
+    }
+  };
+
   // const perf = performance.now();
   const result = React.useMemo(() => {
     const getComputedStyles = key => {
@@ -68,6 +113,7 @@ export default function App() {
           <div className="minuteHand" style={getComputedStyles("minutes")} />
           <div className="secondHand" style={getComputedStyles("seconds")} />
         </div>
+        <div className="temperature">{getTemperature()}</div>
       </div>
     );
   }, [clockHandDegrees]);

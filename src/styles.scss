@@ -6,6 +6,28 @@ $lineSize: $clockSize * 0.05;
 
 *, *::before, *::after {
   box-sizing: border-box;
+  font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
+}
+
+.temperature {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(-50% + 18vmin), -50%);
+  font-size: 5vmin;
+  line-height: 1;
+  padding: 1vmin calc(1vmin + 0.5ex) 1vmin 1vmin;
+  border: 0.2vmin solid rgba($black, 0.1);
+  border-radius: 2vmin;
+  background: rgba($black, 0.05);
+
+  &::after {
+    content: "°";
+    display: inline-block;
+    position: absolute;
+    top: 1vmin;
+    right: 0;
+  }
 }
 
 .clock {
@@ -137,7 +159,6 @@ $lineSize: $clockSize * 0.05;
 }
 
 .dial {
-  font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
   margin: 0;
   padding: 0;
   list-style: none;
